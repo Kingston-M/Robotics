@@ -52,8 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear OpMode")
-@Disabled
+@TeleOp
 public class Kingg extends LinearOpMode {
 
     // Declare OpMode members.
@@ -64,8 +63,7 @@ public class Kingg extends LinearOpMode {
     public Servo servo5;
 
     DcMotor motor;
-    DcMotor mottor;
-    DcMotor mmotor;
+
 
     @Override
     public void runOpMode() {
@@ -75,12 +73,12 @@ public class Kingg extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        servo4 = hardwareMap.get(Servo.class, "servo1");
-        servo5 = hardwareMap.get(Servo.class, "servo2");
-        mmotor = hardwareMap.get(DcMotor.class, "mmottor");
-        mottor = hardwareMap.get(DcMotor.class, "mottor");
+        servo4 = hardwareMap.get(Servo.class, "servo4");
+        servo5 = hardwareMap.get(Servo.class, "servo5");
         motor = hardwareMap.get(DcMotor.class, "motor");
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+
+
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -105,59 +103,51 @@ public class Kingg extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
+            double drive = gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             leftPower = Range.clip(drive + turn, -1.0, 1.0);
             rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
-            if (gamepad1.right_trigger > 0) {
-                motor.setPower(1);
+            if (gamepad1.left_trigger > 0) {
+                motor.setPower(0.5);
                 motor.setDirection(DcMotorSimple.Direction.REVERSE);
-            } else if (gamepad1.left_trigger > 0) {
-                motor.setPower(1);
+            } else if (gamepad1.right_trigger > 0) {
+                motor.setPower(0.5);
                 motor.setDirection(DcMotorSimple.Direction.FORWARD);
             }
-            motor.setPower(0);
-            if (gamepad1.right_bumper){
-                mottor.setPower(1);
-                mmotor.setPower(1);
-                mottor.setDirection(DcMotorSimple.Direction.REVERSE);
-                mmotor.setDirection(DcMotorSimple.Direction.FORWARD);
-            } else {
-                mottor.setPower(0);
-                mmotor.setPower(0);
-                mottor.setDirection(DcMotorSimple.Direction.REVERSE);
-                mmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            else {
+                motor.setPower(0);
+                motor.setDirection(DcMotorSimple.Direction.REVERSE);
             }
+
+            if (gamepad1.right_bumper){
+
+            }
+
             if (gamepad1.left_bumper){
-                mottor.setPower(1);
-                mmotor.setPower(1);
-                mottor.setDirection(DcMotorSimple.Direction.FORWARD);
-                mmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
             } else {
-                mottor.setPower(0);
-                mmotor.setPower(0);
-                mottor.setDirection(DcMotorSimple.Direction.REVERSE);
-                mmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
             }
             if (gamepad1.y) {
 
-                servo4.setPosition(3);
+                servo4.setPosition(.3);
+                servo5.setPosition(.3);
             }
             if (gamepad1.x) {
-                servo4.setPosition(-3);
+                servo4.setPosition(.5);
+                servo5.setPosition(0);
 //            servo.setPower(-1);
             }
             if (gamepad1.a) {
 
-                servo4.setPosition(3);
+
             }
             if (gamepad1.b) {
-                servo4.setPosition(-3);
+
 //            servo.setPower(-1);
             }
-            mottor.setPower(0);
-            mmotor.setPower(0);
+
 
 
 
